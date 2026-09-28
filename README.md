@@ -3,7 +3,7 @@
 A single-page static site for GitHub Pages. It has no build step: plain HTML, CSS and a small amount of JS.
 
 ## Adding your photos
-Put the photos in `images/` using these exact names:
+Put the photos in `assets/` using these exact names:
 
 | File | Used for | Suggested size |
 |---|---|---|
@@ -25,16 +25,16 @@ Open `brand.html` to see everything on one page.
 
 | File | Use |
 |---|---|
-| `images/logo.svg` / `logo-light.svg` | Full logo for dark / light backgrounds |
-| `images/logo-mark.svg` / `logo-mark-light.svg` | V/C clapper icon |
-| `images/favicon.svg`, `favicon-16/32.png` | Simplified icon for small sizes (browser tab) |
-| `images/apple-touch-icon.png` | iPhone home screen icon |
-| `images/avatar-1080.png` | Instagram / LinkedIn profile picture |
+| `assets/logo.svg` / `logo-light.svg` | Full logo for dark / light backgrounds |
+| `assets/logo-mark.svg` / `logo-mark-light.svg` | V/C clapper icon |
+| `assets/favicon.svg`, `favicon-16/32.png` | Simplified icon for small sizes (browser tab) |
+| `assets/apple-touch-icon.png` | iPhone home screen icon |
+| `assets/avatar-1080.png` | Instagram / LinkedIn profile picture |
 
 The logo text is converted to shapes, so the logo files don't need any font installed.
 To change the logo, edit `brand/build_logo.py`, download the Inter Tight font (`InterTight[wght].ttf` from github.com/google/fonts, `ofl/intertight`) and save it next to the script as `InterTight.ttf`, then run it with `fonttools`, `skia-pathops` and `pillow` installed:
 ```
-python brand/build_logo.py images
+python brand/build_logo.py assets
 ```
 Site colors and fonts are set at the top of `styles.css` (`:root`).
 
