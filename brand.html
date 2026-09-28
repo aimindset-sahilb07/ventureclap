@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>VentureClap Brand Sheet</title>
+  <link rel="icon" type="image/svg+xml" href="images/favicon.svg">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Inter+Tight:wght@800&display=swap" rel="stylesheet">
+  <style>
+    :root { --black:#0B0B0D; --green:#2EE59D; --green-dark:#0A8F57; --gold:#F5B82E; --white:#FFFFFF; }
+    * { box-sizing: border-box; }
+    body { margin:0; background:var(--black); color:var(--white); font:15px/1.5 Inter, system-ui, sans-serif; padding:40px 16px 64px; }
+    main { max-width:1040px; margin:0 auto; display:grid; gap:40px; }
+    h1 { font:800 32px/1.1 "Inter Tight", sans-serif; letter-spacing:-0.02em; margin:0; }
+    h2 { font:600 13px Inter, sans-serif; text-transform:uppercase; letter-spacing:.14em; color:var(--gold); margin:0 0 14px; }
+    p { color:#A1A1AA; margin:6px 0 0; }
+    .panel { border:1px solid #26262B; border-radius:16px; padding:32px 24px; display:flex; align-items:center; justify-content:center; min-height:160px; }
+    .panel.light { background:#F7F7F4; border-color:#F7F7F4; }
+    .two { display:grid; gap:16px; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); }
+    .lockup { width:100%; max-width:380px; height:auto; }
+    .sizes { display:flex; flex-wrap:wrap; align-items:flex-end; gap:28px; }
+    .sizes figure { margin:0; text-align:center; color:#A1A1AA; font-size:12px; }
+    .sizes img { display:block; margin:0 auto 8px; image-rendering:auto; }
+    .swatches { display:grid; gap:12px; grid-template-columns:repeat(auto-fit, minmax(150px, 1fr)); }
+    .sw { border-radius:12px; overflow:hidden; border:1px solid #26262B; }
+    .sw div { height:88px; }
+    .sw span { display:block; padding:10px 12px; font-size:13px; }
+    .sw b { display:block; color:var(--white); }
+    .avatar { width:200px; height:200px; border-radius:50%; }
+    code { color:var(--green); }
+  </style>
+</head>
+<body>
+<main>
+  <header>
+    <h1>VentureClap brand</h1>
+    <p>Short form: <strong style="color:#fff">V/C</strong>. Green, gold, white and black.</p>
+  </header>
+
+  <section>
+    <h2>Primary logo</h2>
+    <div class="two">
+      <div class="panel"><img class="lockup" src="images/logo.svg" alt="VentureClap logo on dark"></div>
+      <div class="panel light"><img class="lockup" src="images/logo-light.svg" alt="VentureClap logo on light"></div>
+    </div>
+    <p><code>logo.svg</code> for dark backgrounds, <code>logo-light.svg</code> for light backgrounds.</p>
+  </section>
+
+  <section>
+    <h2>V/C mark</h2>
+    <div class="two">
+      <div class="panel"><img src="images/logo-mark.svg" width="160" height="160" alt="V/C mark on dark"></div>
+      <div class="panel light"><img src="images/logo-mark-light.svg" width="160" height="160" alt="V/C mark on light"></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Small sizes</h2>
+    <div class="panel" style="justify-content:flex-start">
+      <div class="sizes">
+        <figure><img src="images/logo-mark.svg" width="128" height="128" alt=""><figcaption>128</figcaption></figure>
+        <figure><img src="images/logo-mark.svg" width="64" height="64" alt=""><figcaption>64</figcaption></figure>
+        <figure><img src="images/favicon.svg" width="32" height="32" alt=""><figcaption>32 (favicon)</figcaption></figure>
+        <figure><img src="images/favicon.svg" width="16" height="16" alt=""><figcaption>16 (favicon)</figcaption></figure>
+      </div>
+    </div>
+    <p>Below 48px, use the simplified <code>favicon.svg</code>, which has no swinging arm and a bigger V/C.</p>
+  </section>
+
+  <section>
+    <h2>Social avatar</h2>
+    <div class="panel"><img class="avatar" src="images/avatar-1080.png" alt="V/C social avatar"></div>
+    <p><code>avatar-1080.png</code> is 1080×1080 and safe for circular crops on Instagram and LinkedIn.</p>
+  </section>
+
+  <section>
+    <h2>Palette</h2>
+    <div class="swatches">
+      <div class="sw"><div style="background:#2EE59D"></div><span><b>Green</b>#2EE59D</span></div>
+      <div class="sw"><div style="background:#0A8F57"></div><span><b>Green (on light)</b>#0A8F57</span></div>
+      <div class="sw"><div style="background:#F5B82E"></div><span><b>Gold</b>#F5B82E</span></div>
+      <div class="sw"><div style="background:#FFFFFF"></div><span><b>White</b>#FFFFFF</span></div>
+      <div class="sw"><div style="background:#0B0B0D;border-bottom:1px solid #26262B"></div><span><b>Black</b>#0B0B0D</span></div>
+    </div>
+    <p>Typeface: <strong style="color:#fff">Inter Tight 800</strong> for the logo and headings, and Inter for body text.</p>
+  </section>
+</main>
+</body>
+</html>

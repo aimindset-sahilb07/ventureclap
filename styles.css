@@ -1,15 +1,17 @@
 /* Brand tokens: change these to rebrand */
 :root {
-  --bg: #0E0E10;
-  --surface: #17171B;
-  --line: #2A2A31;
-  --text: #F4F4F5;
+  --bg: #0B0B0D;         /* black */
+  --surface: #151518;
+  --line: #26262B;
+  --text: #FFFFFF;       /* white */
   --muted: #A1A1AA;
-  --accent: #FFB020;
-  --accent-ink: #0E0E10;
+  --accent: #2EE59D;     /* green */
+  --accent-hover: #5BF0B5;
+  --gold: #F5B82E;       /* gold */
+  --accent-ink: #0B0B0D;
   --radius: 14px;
   --gutter: 16px;
-  --font-head: "Space Grotesk", "Inter", system-ui, sans-serif;
+  --font-head: "Inter Tight", "Inter", system-ui, sans-serif;
   --font-body: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
 }
 
@@ -38,14 +40,13 @@ a { color: inherit; }
 }
 .btn:active { transform: scale(.97); }
 .btn-primary { background: var(--accent); color: var(--accent-ink); }
-.btn-primary:hover { background: #ffc24d; }
+.btn-primary:hover { background: var(--accent-hover); }
 .btn-ghost { border: 1px solid rgba(255,255,255,.35); color: #fff; backdrop-filter: blur(6px); }
 .btn-ghost:hover { background: rgba(255,255,255,.1); }
 
-/* Wordmark */
-.wordmark { font: 700 22px/1 var(--font-head); letter-spacing: -0.03em; color: #fff; }
-.wordmark span { color: var(--accent); }
-.wordmark.small { font-size: 18px; }
+/* Logo */
+.logo { height: 40px; width: auto; }
+.logo-sm { height: 28px; }
 
 /* Hero: full-bleed photo */
 .hero {
@@ -53,19 +54,19 @@ a { color: inherit; }
   display: flex; flex-direction: column; justify-content: space-between;
   padding: max(var(--gutter), env(safe-area-inset-top)) var(--gutter) 48px;
   /* Fallback if hero.jpg is missing */
-  background: radial-gradient(120% 80% at 70% 20%, #3a2a10 0%, #141418 55%, var(--bg) 100%);
+  background: radial-gradient(120% 80% at 70% 20%, #0f3a2a 0%, #121215 55%, var(--bg) 100%);
   isolation: isolate;
 }
 .hero-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center; z-index: -2; }
 .hero-shade {
   position: absolute; inset: 0; z-index: -1;
-  background: linear-gradient(180deg, rgba(14,14,16,.55) 0%, rgba(14,14,16,.1) 35%, rgba(14,14,16,.85) 100%);
+  background: linear-gradient(180deg, rgba(11,11,13,.55) 0%, rgba(11,11,13,.1) 35%, rgba(11,11,13,.85) 100%);
 }
 .topbar { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
 .topbar .btn { min-height: 40px; padding: 0 16px; font-size: 14px; }
 .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; }
 .hero-copy { max-width: 720px; }
-.eyebrow { text-transform: uppercase; letter-spacing: .14em; font-size: 12px; font-weight: 600; color: var(--accent); margin: 0 0 12px; }
+.eyebrow { text-transform: uppercase; letter-spacing: .14em; font-size: 12px; font-weight: 600; color: var(--gold); margin: 0 0 12px; }
 .hero h1 { font-size: clamp(40px, 11vw, 84px); font-weight: 700; }
 .lede { font-size: clamp(17px, 2.4vw, 20px); color: #e4e4e7; margin: 16px 0 28px; max-width: 560px; }
 .hero-ctas { display: flex; flex-wrap: wrap; gap: 12px; }
@@ -84,7 +85,7 @@ a { color: inherit; }
 .shot:hover img { transform: scale(1.03); }
 .shot:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
 /* Placeholder tile when the photo file is not there yet */
-.shot.missing { aspect-ratio: 4 / 5; background: linear-gradient(135deg, #2a2112, #17171B 60%); cursor: default; }
+.shot.missing { aspect-ratio: 4 / 5; background: linear-gradient(135deg, #10291f, var(--surface) 60%); cursor: default; }
 .shot.missing:nth-child(3n+2) { aspect-ratio: 4 / 3; }
 .shot.missing:nth-child(3n) { aspect-ratio: 1; }
 .shot.missing img { display: none; }
@@ -98,7 +99,7 @@ a { color: inherit; }
 /* Steps */
 .steps { list-style: none; padding: 0; margin: 0; display: grid; gap: 12px; counter-reset: step; }
 .steps li { counter-increment: step; border-top: 1px solid var(--line); padding: 20px 0 0; }
-.steps li::before { content: "0" counter(step); display: block; font: 700 14px var(--font-head); color: var(--accent); margin-bottom: 8px; }
+.steps li::before { content: "0" counter(step); display: block; font: 700 14px var(--font-head); color: var(--gold); margin-bottom: 8px; }
 .steps h3 { font-size: 22px; margin-bottom: 6px; }
 
 /* CTA */

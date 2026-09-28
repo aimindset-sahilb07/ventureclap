@@ -20,9 +20,23 @@ You can compress photos for free at squoosh.app.
 Search `index.html` for `EDIT:`. That covers the headline, email, social links and the `og:image` URL, which must be the full `https://…` address once the site is live.
 
 ## Brand
-Colors and fonts are set at the top of `styles.css` (`:root`).
-Logo files are `images/logo.svg` (icon and wordmark) and `images/logo-mark.svg` (icon only, also the favicon).
-`logo-options.html` shows three color and font directions.
+VentureClap, short form **V/C**. Palette: green `#2EE59D` (`#0A8F57` on light), gold `#F5B82E`, white and black `#0B0B0D`. Typeface: Inter Tight 800.
+Open `brand.html` to see everything on one page.
+
+| File | Use |
+|---|---|
+| `images/logo.svg` / `logo-light.svg` | Full logo for dark / light backgrounds |
+| `images/logo-mark.svg` / `logo-mark-light.svg` | V/C clapper icon |
+| `images/favicon.svg`, `favicon-16/32.png` | Simplified icon for small sizes (browser tab) |
+| `images/apple-touch-icon.png` | iPhone home screen icon |
+| `images/avatar-1080.png` | Instagram / LinkedIn profile picture |
+
+The logo text is converted to shapes, so the logo files don't need any font installed.
+To change the logo, edit `brand/build_logo.py`, download the Inter Tight font (`InterTight[wght].ttf` from github.com/google/fonts, `ofl/intertight`) and save it next to the script as `InterTight.ttf`, then run it with `fonttools`, `skia-pathops` and `pillow` installed:
+```
+python brand/build_logo.py images
+```
+Site colors and fonts are set at the top of `styles.css` (`:root`).
 
 ## Preview locally
 ```
