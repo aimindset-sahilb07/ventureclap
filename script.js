@@ -72,3 +72,19 @@ box.addEventListener('touchend', (e) => {
   if (Math.abs(dx) > 50) step(dx < 0 ? 1 : -1);
   startX = null;
 });
+
+// Contact: copy the email address (fallback for computers with no email app set up)
+const copyBtn = document.querySelector('.copy-email');
+if (copyBtn) {
+  const status = document.querySelector('.copy-status');
+  copyBtn.addEventListener('click', async () => {
+    const email = copyBtn.dataset.email;
+    try {
+      await navigator.clipboard.writeText(email);
+      status.textContent = 'Copied';
+    } catch {
+      window.prompt('Copy this email address:', email);
+    }
+    setTimeout(() => { status.textContent = ''; }, 2500);
+  });
+}
