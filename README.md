@@ -18,7 +18,7 @@ The original full-size photos are kept in `assets/harenmehta_images_website_2026
 You can compress photos for free at squoosh.app.
 
 ## Placeholders to edit
-Search `index.html` for `EDIT:`. That covers the headline, social links and the `og:image` URL, which must be the full `https://…` address once the site is live.
+Search `index.html` for `EDIT:`. That covers the headline and the `og:image` URL, which must be the full `https://…` address once the site is live.
 The contact section (Haren's photo `assets/haren.jpg`, phone numbers and email) is near the bottom of `index.html`.
 
 ## Brand
