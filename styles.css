@@ -50,8 +50,8 @@ a { color: inherit; }
 /* Hero: full-bleed photo */
 .hero {
   position: relative; min-height: 100vh; min-height: 100svh;
-  display: flex; flex-direction: column; justify-content: space-between;
-  padding: max(var(--gutter), env(safe-area-inset-top)) var(--gutter) 48px;
+  display: flex; flex-direction: column; justify-content: space-between; gap: 40px;
+  padding: max(var(--gutter), env(safe-area-inset-top)) var(--gutter) clamp(32px, 6svh, 72px);
   /* Fallback if hero.jpg is missing */
   background: radial-gradient(120% 80% at 70% 20%, #1d4a3b 0%, #12302700 60%), var(--bg);
   isolation: isolate;
@@ -59,15 +59,27 @@ a { color: inherit; }
 .hero-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center; z-index: -2; }
 .hero-shade {
   position: absolute; inset: 0; z-index: -1;
-  background: linear-gradient(180deg, rgba(15,42,34,.6) 0%, rgba(15,42,34,.1) 35%, rgba(15,42,34,.9) 100%);
+  background:
+    linear-gradient(90deg, rgba(15,42,34,.7) 0%, rgba(15,42,34,.35) 45%, rgba(15,42,34,0) 75%),
+    linear-gradient(180deg, rgba(15,42,34,.6) 0%, rgba(15,42,34,.15) 30%, rgba(15,42,34,.55) 60%, rgba(15,42,34,.92) 100%);
 }
+.hero-copy { text-shadow: 0 1px 14px rgba(15,42,34,.7); }
+/* Hero content lines up with the 1200px column used by the sections below */
+.topbar, .hero-copy { width: 100%; max-width: calc(1200px - 2 * var(--gutter)); margin-inline: auto; }
 .topbar { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
 .topbar .btn { min-height: 40px; padding: 0 16px; font-size: 12px; }
 .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; }
-.hero-copy { max-width: 720px; }
 .eyebrow { text-transform: uppercase; letter-spacing: .28em; font-size: 12px; font-weight: 500; color: var(--accent); margin: 0 0 12px; }
-.hero h1 { font-size: clamp(44px, 12vw, 92px); }
-.lede { font-size: clamp(17px, 2.4vw, 20px); color: #e4e4e7; margin: 16px 0 28px; max-width: 560px; }
+/* Sized by width AND height so short landscape screens don't get a giant headline */
+.hero h1 { font-size: clamp(40px, min(12vw, 12svh), 104px); max-width: 9.5em; }
+.lede { font-size: clamp(16px, 2.4vw, 20px); color: var(--text); margin: 16px 0 28px; max-width: 560px; }
+
+/* Phones held sideways and other short screens */
+@media (max-height: 520px) and (orientation: landscape) {
+  .hero { gap: 24px; }
+  .lede { margin: 10px 0 18px; max-width: 480px; }
+  .btn { min-height: 44px; }
+}
 .hero-ctas { display: flex; flex-wrap: wrap; gap: 12px; }
 
 /* Sections */

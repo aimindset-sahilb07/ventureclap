@@ -23,14 +23,14 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;1,500&family=Inter:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="styles.css?v=7">
 </head>
 <body>
   <a class="skip" href="#work">Skip to work</a>
 
-  <!-- HERO: full-bleed photo. EDIT: replace assets/hero.jpg -->
+  <!-- HERO: full-bleed photo (assets/hero-1000.jpg for phones, hero-2000.jpg for larger screens) -->
   <header class="hero">
-    <img class="hero-img" src="assets/hero.jpg" alt="Founder on set during a VentureClap shoot" fetchpriority="high">
+    <img class="hero-img" src="assets/hero-2000.jpg" srcset="assets/hero-1000.jpg 1000w, assets/hero-2000.jpg 2000w" sizes="100vw" width="2000" height="2498" alt="Overhead view of a startup team working around a marble table" fetchpriority="high">
     <div class="hero-shade" aria-hidden="true"></div>
 
     <nav class="topbar">
@@ -114,6 +114,6 @@
     <button class="lb-next" aria-label="Next photo">›</button>
   </div>
 
-  <script src="script.js" defer></script>
+  <script src="script.js?v=5" defer></script>
 </body>
 </html>
