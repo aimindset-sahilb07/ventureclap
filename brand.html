@@ -6,84 +6,105 @@
   <meta name="robots" content="noindex">
   <title>VentureClap Brand Sheet</title>
   <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Inter+Tight:wght@800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500&family=Inter:wght@400;500&display=swap" rel="stylesheet">
   <style>
-    :root { --black:#0B0B0D; --green:#2EE59D; --green-dark:#0A8F57; --gold:#F5B82E; --white:#FFFFFF; }
+    :root { --forest:#0F2A22; --ivory:#F4F1EA; --brass:#C9A35A; --black:#0B0B0D; --muted:#B9B4A8; --line:#24473B; }
     * { box-sizing: border-box; }
-    body { margin:0; background:var(--black); color:var(--white); font:15px/1.5 Inter, system-ui, sans-serif; padding:40px 16px 64px; }
-    main { max-width:1040px; margin:0 auto; display:grid; gap:40px; }
-    h1 { font:800 32px/1.1 "Inter Tight", sans-serif; letter-spacing:-0.02em; margin:0; }
-    h2 { font:600 13px Inter, sans-serif; text-transform:uppercase; letter-spacing:.14em; color:var(--gold); margin:0 0 14px; }
-    p { color:#A1A1AA; margin:6px 0 0; }
-    .panel { border:1px solid #26262B; border-radius:16px; padding:32px 24px; display:flex; align-items:center; justify-content:center; min-height:160px; }
-    .panel.light { background:#F7F7F4; border-color:#F7F7F4; }
-    .two { display:grid; gap:16px; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); }
-    .lockup { width:100%; max-width:380px; height:auto; }
-    .sizes { display:flex; flex-wrap:wrap; align-items:flex-end; gap:28px; }
-    .sizes figure { margin:0; text-align:center; color:#A1A1AA; font-size:12px; }
-    .sizes img { display:block; margin:0 auto 8px; image-rendering:auto; }
+    body { margin:0; background:var(--forest); color:var(--ivory); font:15px/1.6 Inter, system-ui, sans-serif; padding:48px 16px 72px; }
+    main { max-width:1040px; margin:0 auto; display:grid; gap:48px; }
+    h1 { font:500 40px/1.1 "Cormorant Garamond", Georgia, serif; margin:0; }
+    h2 { font:500 12px Inter, sans-serif; text-transform:uppercase; letter-spacing:.28em; color:var(--brass); margin:0 0 16px; }
+    p { color:var(--muted); margin:8px 0 0; }
+    .panel { border:1px solid var(--line); border-radius:4px; padding:40px 24px; display:flex; align-items:center; justify-content:center; min-height:180px; }
+    .on-black { background:var(--black); border-color:var(--black); }
+    .on-ivory { background:var(--ivory); border-color:var(--ivory); }
+    .grid { display:grid; gap:16px; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); }
+    .h { width:100%; max-width:360px; height:auto; }
+    .s { width:100%; max-width:200px; height:auto; }
+    .sizes { display:flex; flex-wrap:wrap; align-items:flex-end; gap:32px; }
+    .sizes figure { margin:0; text-align:center; color:var(--muted); font-size:12px; }
+    .sizes img { display:block; margin:0 auto 8px; }
     .swatches { display:grid; gap:12px; grid-template-columns:repeat(auto-fit, minmax(150px, 1fr)); }
-    .sw { border-radius:12px; overflow:hidden; border:1px solid #26262B; }
+    .sw { border:1px solid var(--line); border-radius:4px; overflow:hidden; }
     .sw div { height:88px; }
-    .sw span { display:block; padding:10px 12px; font-size:13px; }
-    .sw b { display:block; color:var(--white); }
+    .sw span { display:block; padding:10px 12px; font-size:13px; color:var(--muted); }
+    .sw b { display:block; color:var(--ivory); font-weight:500; }
     .avatar { width:200px; height:200px; border-radius:50%; }
-    code { color:var(--green); }
+    code { color:var(--brass); font-size:13px; }
+    .serif { font:500 30px "Cormorant Garamond", serif; color:var(--ivory); }
+    .sans { font:400 13px Inter, sans-serif; letter-spacing:.32em; color:var(--ivory); }
   </style>
 </head>
 <body>
 <main>
   <header>
-    <h1>VentureClap brand</h1>
-    <p>Short form: <strong style="color:#fff">V/C</strong>. Green, gold, white and black.</p>
+    <h1>VentureClap</h1>
+    <p>Serif V/C monogram. Forest, ivory, brass and black.</p>
   </header>
 
   <section>
-    <h2>Primary logo</h2>
-    <div class="two">
-      <div class="panel"><img class="lockup" src="assets/logo.svg" alt="VentureClap logo on dark"></div>
-      <div class="panel light"><img class="lockup" src="assets/logo-light.svg" alt="VentureClap logo on light"></div>
+    <h2>Primary logo, stacked</h2>
+    <div class="grid">
+      <div class="panel"><img class="s" src="assets/logo-stacked.svg" alt="Stacked logo on forest"></div>
+      <div class="panel on-ivory"><img class="s" src="assets/logo-stacked-light.svg" alt="Stacked logo on ivory"></div>
     </div>
-    <p><code>logo.svg</code> for dark backgrounds, <code>logo-light.svg</code> for light backgrounds.</p>
+    <p><code>logo-stacked.svg</code> and <code>logo-stacked-light.svg</code>: for cards, decks, video end frames and merch.</p>
   </section>
 
   <section>
-    <h2>V/C mark</h2>
-    <div class="two">
-      <div class="panel"><img src="assets/logo-mark.svg" width="160" height="160" alt="V/C mark on dark"></div>
-      <div class="panel light"><img src="assets/logo-mark-light.svg" width="160" height="160" alt="V/C mark on light"></div>
+    <h2>Horizontal logo</h2>
+    <div class="grid">
+      <div class="panel"><img class="h" src="assets/logo.svg" alt="Horizontal logo on forest"></div>
+      <div class="panel on-black"><img class="h" src="assets/logo.svg" alt="Horizontal logo on black"></div>
+      <div class="panel on-ivory"><img class="h" src="assets/logo-light.svg" alt="Horizontal logo on ivory"></div>
+    </div>
+    <p><code>logo.svg</code> and <code>logo-light.svg</code>: for the website header, email signatures and anywhere wide.</p>
+  </section>
+
+  <section>
+    <h2>Monogram</h2>
+    <div class="grid">
+      <div class="panel"><img src="assets/logo-mark.svg" width="180" alt="V/C monogram on forest"></div>
+      <div class="panel on-ivory"><img src="assets/logo-mark-light.svg" width="180" alt="V/C monogram on ivory"></div>
     </div>
   </section>
 
   <section>
     <h2>Small sizes</h2>
-    <div class="panel" style="justify-content:flex-start">
+    <div class="panel on-black" style="justify-content:flex-start">
       <div class="sizes">
-        <figure><img src="assets/logo-mark.svg" width="128" height="128" alt=""><figcaption>128</figcaption></figure>
-        <figure><img src="assets/logo-mark.svg" width="64" height="64" alt=""><figcaption>64</figcaption></figure>
-        <figure><img src="assets/favicon.svg" width="32" height="32" alt=""><figcaption>32 (favicon)</figcaption></figure>
-        <figure><img src="assets/favicon.svg" width="16" height="16" alt=""><figcaption>16 (favicon)</figcaption></figure>
+        <figure><img src="assets/favicon.svg" width="128" height="128" alt=""><figcaption>128</figcaption></figure>
+        <figure><img src="assets/favicon.svg" width="64" height="64" alt=""><figcaption>64</figcaption></figure>
+        <figure><img src="assets/favicon.svg" width="32" height="32" alt=""><figcaption>32</figcaption></figure>
+        <figure><img src="assets/favicon.svg" width="16" height="16" alt=""><figcaption>16</figcaption></figure>
       </div>
     </div>
-    <p>Below 48px, use the simplified <code>favicon.svg</code>, which has no swinging arm and a bigger V/C.</p>
+    <p><code>favicon.svg</code> uses a bolder cut of the monogram so it stays readable in a browser tab.</p>
   </section>
 
   <section>
     <h2>Social avatar</h2>
-    <div class="panel"><img class="avatar" src="assets/avatar-1080.png" alt="V/C social avatar"></div>
+    <div class="panel on-black"><img class="avatar" src="assets/avatar-1080.png" alt="V/C social avatar"></div>
     <p><code>avatar-1080.png</code> is 1080×1080 and safe for circular crops on Instagram and LinkedIn.</p>
   </section>
 
   <section>
     <h2>Palette</h2>
     <div class="swatches">
-      <div class="sw"><div style="background:#2EE59D"></div><span><b>Green</b>#2EE59D</span></div>
-      <div class="sw"><div style="background:#0A8F57"></div><span><b>Green (on light)</b>#0A8F57</span></div>
-      <div class="sw"><div style="background:#F5B82E"></div><span><b>Gold</b>#F5B82E</span></div>
-      <div class="sw"><div style="background:#FFFFFF"></div><span><b>White</b>#FFFFFF</span></div>
-      <div class="sw"><div style="background:#0B0B0D;border-bottom:1px solid #26262B"></div><span><b>Black</b>#0B0B0D</span></div>
+      <div class="sw"><div style="background:#0F2A22"></div><span><b>Forest</b>#0F2A22</span></div>
+      <div class="sw"><div style="background:#F4F1EA"></div><span><b>Ivory</b>#F4F1EA</span></div>
+      <div class="sw"><div style="background:#C9A35A"></div><span><b>Brass</b>#C9A35A</span></div>
+      <div class="sw"><div style="background:#A8823A"></div><span><b>Brass (on ivory)</b>#A8823A</span></div>
+      <div class="sw"><div style="background:#0B0B0D"></div><span><b>Black</b>#0B0B0D</span></div>
     </div>
-    <p>Typeface: <strong style="color:#fff">Inter Tight 800</strong> for the logo and headings, and Inter for body text.</p>
+  </section>
+
+  <section>
+    <h2>Type</h2>
+    <div class="grid">
+      <div class="panel" style="flex-direction:column;gap:6px"><span class="serif">Cormorant Garamond</span><p>Monogram and headings (Medium 500)</p></div>
+      <div class="panel" style="flex-direction:column;gap:6px"><span class="sans">INTER</span><p>Wordmark, body and labels (Regular 400)</p></div>
+    </div>
   </section>
 </main>
 </body>

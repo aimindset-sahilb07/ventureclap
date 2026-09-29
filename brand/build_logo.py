@@ -1,72 +1,48 @@
-"""Generate the VentureClap logo files (SVG + PNG) from one set of geometry.
+"""Generate the VentureClap logo files (SVG + PNG).
 
-Run: venv/Scripts/python build_logo.py <out_dir>
+Serif V/C monogram (Cormorant Garamond) with a brass slash that runs past the
+full height of the letters, plus a spaced-caps wordmark (Inter).
+
+Needs, next to this script: CormorantGaramond.ttf and Inter.ttf (variable fonts
+from github.com/google/fonts: ofl/cormorantgaramond, ofl/inter).
+Run: python build_logo.py <out_dir>        (pip install fonttools skia-pathops pillow)
 """
 import math
 import sys
 from pathlib import Path
 
 from fontTools.pens.basePen import BasePen
+from fontTools.pens.boundsPen import BoundsPen
 from fontTools.pens.svgPathPen import SVGPathPen
 from fontTools.pens.transformPen import TransformPen
 from fontTools.ttLib import TTFont
 from fontTools.varLib.instancer import OverlapMode, instantiateVariableFont
-from PIL import Image, ImageDraw
+from PIL import Image, ImageChops, ImageDraw
 
 OUT = Path(sys.argv[1])
 HERE = Path(__file__).parent
 
+FOREST = "#0F2A22"
+IVORY = "#F4F1EA"
+BRASS = "#C9A35A"
+BRASS_DEEP = "#A8823A"  # brass on light backgrounds
 BLACK = "#0B0B0D"
-GREEN = "#2EE59D"
-GREEN_DARK = "#0A8F57"
-GOLD = "#F5B82E"
-WHITE = "#FFFFFF"
 
 THEMES = {
-    "dark": dict(board=GREEN, arm=WHITE, arm_stripe=BLACK, bar_stripe=BLACK, text=BLACK,
-                 slash=GOLD, slash_edge=BLACK, hinge=BLACK, hinge_ring=WHITE,
-                 word1=WHITE, word2=GREEN),
-    "light": dict(board=GREEN_DARK, arm=BLACK, arm_stripe=WHITE, bar_stripe=BLACK, text=BLACK,
-                  slash=GOLD, slash_edge=BLACK, hinge=WHITE, hinge_ring=BLACK,
-                  word1=BLACK, word2=GREEN_DARK),
+    "dark": dict(letters=IVORY, slash=BRASS, word=IVORY),
+    "light": dict(letters=FOREST, slash=BRASS_DEEP, word=FOREST),
 }
 
-# ---- Mark geometry (64x64 units) -------------------------------------------
-ANGLE = -18  # clapper arm swing, degrees
-HINGE = (6.0, 25.0)  # arm pivots on its bottom-left corner
-ARM = (6.0, 18.0, 52.0, 7.0)  # x, y, w, h (before rotation)
-BAR = (6.0, 25.5, 52.0, 6.0)
-BODY = (6.0, 32.5, 52.0, 29.5)
-STRIPE_W, STRIPE_SLANT, STRIPE_STEP, STRIPE_START = 7.0, 4.5, 14.0, 12.0
+
+# ---- Fonts ------------------------------------------------------------------------
+def load(file, axes):
+    # REMOVE merges overlapping contours so every renderer fills letters the same way.
+    f = instantiateVariableFont(TTFont(HERE / file), axes, overlap=OverlapMode.REMOVE)
+    return f, f.getGlyphSet(), f.getBestCmap(), f["head"].unitsPerEm
 
 
-def stripes(x, y, w, h):
-    """Parallelogram stripes across a bar, clipped to the bar's width."""
-    polys = []
-    sx = x + STRIPE_START
-    while sx + STRIPE_W <= x + w:
-        polys.append([(sx, y), (sx + STRIPE_W, y), (sx + STRIPE_W - STRIPE_SLANT, y + h), (sx - STRIPE_SLANT, y + h)])
-        sx += STRIPE_STEP
-    return polys
-
-
-def rot(pts, deg=ANGLE, c=HINGE):
-    a = math.radians(deg)
-    ca, sa = math.cos(a), math.sin(a)
-    return [(c[0] + (px - c[0]) * ca - (py - c[1]) * sa, c[1] + (px - c[0]) * sa + (py - c[1]) * ca) for px, py in pts]
-
-
-def rect_pts(x, y, w, h):
-    return [(x, y), (x + w, y), (x + w, y + h), (x, y + h)]
-
-
-# ---- Font -> paths ------------------------------------------------------------
-# REMOVE merges overlapping contours so every renderer fills letters the same way (needs skia-pathops).
-font = instantiateVariableFont(TTFont(HERE / "InterTight.ttf"), {"wght": 800}, overlap=OverlapMode.REMOVE)
-glyphs = font.getGlyphSet()
-cmap = font.getBestCmap()
-UPM = font["head"].unitsPerEm
-CAP = font["OS/2"].sCapHeight
+SERIF = {w: load("CormorantGaramond.ttf", {"wght": w}) for w in (500, 700)}
+SANS = load("Inter.ttf", {"wght": 400, "opsz": 14})
 
 
 class FlatPen(BasePen):
@@ -104,188 +80,184 @@ class FlatPen(BasePen):
     _endPath = _closePath
 
 
-def layout(text, size, x, baseline, tracking=0.0):
-    """Return [(glyph_name, transform)] placing text with its baseline at `baseline`."""
-    s = size / UPM
-    out, pen_x = [], x
+class Glyph:
+    """One placed glyph: font data + transform (font units -> logo units, y down)."""
+
+    def __init__(self, font, ch, size, x, baseline):
+        _, gs, cmap, upm = font
+        self.gs, self.name = gs, cmap[ord(ch)]
+        s = size / upm
+        self.tf = (s, 0, 0, -s, x, baseline)
+        self.advance = gs[self.name].width * s
+
+    def _draw(self, pen):
+        self.gs[self.name].draw(TransformPen(pen, self.tf))
+
+    def svg(self):
+        p = SVGPathPen(self.gs)
+        self._draw(p)
+        return p.getCommands()
+
+    def polys(self):
+        p = FlatPen(self.gs)
+        self._draw(p)
+        return p.polys
+
+    def bounds(self):
+        p = BoundsPen(self.gs)
+        self._draw(p)
+        return p.bounds  # xmin, ymin, xmax, ymax (y down)
+
+
+def text_run(font, text, size, x, baseline, tracking=0.0):
+    out, pen = [], x
     for ch in text:
-        g = cmap[ord(ch)]
-        out.append((g, (s, 0, 0, -s, pen_x, baseline)))
-        pen_x += glyphs[g].width * s + tracking
-    return out, pen_x - tracking - x
+        g = Glyph(font, ch, size, pen, baseline)
+        out.append(g)
+        pen += g.advance + tracking
+    return out, pen - tracking - x
 
 
-def svg_path(g, tf):
-    p = SVGPathPen(glyphs)
-    glyphs[g].draw(TransformPen(p, tf))
-    return p.getCommands()
+# ---- Monogram geometry ---------------------------------------------------------------
+def monogram(weight=500, size=48.0, stroke=1.6, clear=4.5, angle=17.0, ext=0.12):
+    """Lay out V / C. Returns glyphs, slash polygon and bounds (x0, y0, x1, y1)."""
+    font = SERIF[weight]
+    base = size  # baseline y; letters sit above it
+    V = Glyph(font, "V", size, 0, base)
+    vb = V.bounds()
+    top, bottom = vb[1], vb[3]
+    h = bottom - top
+    y_top, y_bot = top - ext * h, bottom + ext * h
+
+    a = math.radians(angle)
+    n = (math.cos(a), math.sin(a))  # unit normal pointing right of the slash line
+
+    def side(pt, c):
+        return (pt[0] - c[0]) * n[0] + (pt[1] - c[1]) * n[1]
+
+    mid_y = (y_top + y_bot) / 2
+    # Slash centre: just right of the V with `clear` units of space.
+    v_pts = [p for poly in V.polys() for p in poly]
+    cx = max(p[0] + (p[1] - mid_y) * math.tan(a) for p in v_pts) + clear / math.cos(a) + stroke / 2 / math.cos(a)
+    centre = (cx, mid_y)
+    assert all(side(p, centre) <= -clear for p in v_pts)
+
+    # C: shift right until every point clears the slash by `clear`.
+    C0 = Glyph(font, "C", size, 0, base)
+    c_min = min(side(p, centre) for poly in C0.polys() for p in poly)
+    C = Glyph(font, "C", size, (clear + stroke / 2 - c_min) / n[0], base)
+
+    half = (y_bot - y_top) / 2
+    d = (math.sin(a), -math.cos(a))  # direction up along the slash
+    t = (cx + d[0] * half / math.cos(a), mid_y + d[1] * half / math.cos(a))
+    b = (cx - d[0] * half / math.cos(a), mid_y - d[1] * half / math.cos(a))
+    w = (n[0] * stroke / 2, n[1] * stroke / 2)
+    slash = [(t[0] - w[0], t[1] - w[1]), (t[0] + w[0], t[1] + w[1]), (b[0] + w[0], b[1] + w[1]), (b[0] - w[0], b[1] - w[1])]
+
+    xs = [p[0] for p in slash] + [V.bounds()[0], C.bounds()[2]]
+    ys = [p[1] for p in slash]
+    return dict(glyphs=[V, C], slash=slash, bounds=(min(xs), min(ys), max(xs), max(ys)), cap=(top, bottom))
 
 
-def flat_polys(g, tf):
-    p = FlatPen(glyphs)
-    glyphs[g].draw(TransformPen(p, tf))
-    return p.polys
+MARK = monogram()
+FAV = monogram(weight=700, stroke=4.6, clear=2.6, ext=0.08)
 
 
-# V/C inside the board: fit the cap height to the board, center it.
-VC_SIZE = 25.0
-_, vc_w = layout("V/C", VC_SIZE, 0, 0, tracking=-0.6)
-vc_x = BODY[0] + (BODY[2] - vc_w) / 2
-vc_base = BODY[1] + BODY[3] / 2 + (CAP * VC_SIZE / UPM) / 2
-VC, _ = layout("V/C", VC_SIZE, vc_x, vc_base, tracking=-0.6)
-
-
-# ---- SVG output -----------------------------------------------------------------
+# ---- SVG helpers ----------------------------------------------------------------------
 def poly_d(pts):
     return "M" + "L".join(f"{x:.2f} {y:.2f}" for x, y in pts) + "Z"
 
 
-def mark_svg(t, dx=0.0):
-    th = THEMES[t]
-    arm = rot(rect_pts(*ARM))
-    arm_stripes = [rot(p) for p in stripes(*ARM)]
-    bx, by, bw, bh = BAR
-    ox, oy, ow, oh = BODY
-    parts = [
-        f'<g transform="translate({dx} 0)">',
-        f'<rect x="{bx}" y="{by}" width="{bw}" height="{bh}" rx="1.5" fill="{th["board"]}"/>',
-        f'<path d="{"".join(poly_d(p) for p in stripes(*BAR))}" fill="{th["bar_stripe"]}"/>',
-        f'<rect x="{ox}" y="{oy}" width="{ow}" height="{oh}" rx="5" fill="{th["board"]}"/>',
-        f'<path d="{poly_d(arm)}" fill="{th["arm"]}" stroke="{th["arm"]}" stroke-width="1" stroke-linejoin="round"/>',
-        f'<path d="{"".join(poly_d(p) for p in arm_stripes)}" fill="{th["arm_stripe"]}"/>',
-        f'<circle cx="{HINGE[0] + 2}" cy="{HINGE[1] - 0.5}" r="2.6" fill="{th["hinge"]}" stroke="{th["hinge_ring"]}" stroke-width="1.4"/>',
-    ]
-    for g, tf in VC:
-        if g == cmap[ord("/")]:
-            parts.append(f'<path d="{svg_path(g, tf)}" fill="{th["slash"]}" stroke="{th["slash_edge"]}" stroke-width="1.6" paint-order="stroke" stroke-linejoin="round"/>')
-        else:
-            parts.append(f'<path d="{svg_path(g, tf)}" fill="{th["text"]}"/>')
-    parts.append("</g>")
-    return "\n  ".join(parts)
+def fmt(v):
+    return f"{v:.2f}".rstrip("0").rstrip(".")
 
 
-def write_svg(name, body, w, h, label="VentureClap"):
+def mark_svg(m, th, dx, dy, k=1.0):
+    g = f'<g transform="translate({fmt(dx)} {fmt(dy)}) scale({fmt(k)})">'
+    letters = "".join(gl.svg() for gl in m["glyphs"])
+    return (f'{g}<path d="{letters}" fill="{th["letters"]}"/>'
+            f'<path d="{poly_d(m["slash"])}" fill="{th["slash"]}"/></g>')
+
+
+def word_svg(run, colour):
+    return f'<path d="{"".join(g.svg() for g in run)}" fill="{colour}"/>'
+
+
+def write_svg(name, w, h, body, label="VentureClap"):
     (OUT / name).write_text(
-        f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {w:.0f} {h:.0f}" role="img" aria-label="{label}">\n  {body}\n</svg>\n',
+        f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {fmt(w)} {fmt(h)}" role="img" aria-label="{label}">\n  {body}\n</svg>\n',
         encoding="utf-8",
     )
 
 
-WORD_SIZE = 38.0
-TEXT_X = 70
-word1, w1 = layout("Venture", WORD_SIZE, TEXT_X, 47, tracking=-1.0)
-word2, w2 = layout("Clap", WORD_SIZE, TEXT_X + w1 - 0.6, 47, tracking=-1.0)
-LOCKUP_W = TEXT_X + w1 + w2 + 4
+# ---- Layouts ---------------------------------------------------------------------------
+PAD = 2.0
+mx0, my0, mx1, my1 = MARK["bounds"]
+MW, MH = mx1 - mx0, my1 - my0
+cap_top, cap_bot = MARK["cap"]
+SANS_CAP_RATIO = SANS[0]["OS/2"].sCapHeight / SANS[3]
 
-for t, suffix in (("dark", ""), ("light", "-light")):
-    th = THEMES[t]
-    write_svg(f"logo-mark{suffix}.svg", mark_svg(t), 64, 64, "VentureClap V/C")
-    words = "".join(svg_path(g, tf) for g, tf in word1)
-    words2 = "".join(svg_path(g, tf) for g, tf in word2)
-    write_svg(
-        f"logo{suffix}.svg",
-        mark_svg(t) + f'\n  <path d="{words}" fill="{th["word1"]}"/>\n  <path d="{words2}" fill="{th["word2"]}"/>',
-        LOCKUP_W, 64,
-    )
+# Horizontal lockup: monogram left, wordmark vertically centred on the letters.
+WORD_SIZE = 13.0
+H_GAP = 16.0
+H_W0 = PAD + MW + H_GAP
+h_base = PAD - my0 + (cap_top + cap_bot) / 2 + SANS_CAP_RATIO * WORD_SIZE / 2
+H_WORD, h_len = text_run(SANS, "VENTURECLAP", WORD_SIZE, H_W0, h_base, 0.32 * WORD_SIZE)
+H_W, H_H = H_W0 + h_len + PAD, MH + 2 * PAD
 
+# Stacked lockup: monogram centred above the wordmark.
+S_SIZE = 11.0
+S_GAP = 14.0
+S_CAP = SANS_CAP_RATIO * S_SIZE
+_, s_len = text_run(SANS, "VENTURECLAP", S_SIZE, 0, 0, 0.32 * S_SIZE)
+S_W = max(MW, s_len) + 2 * PAD
+S_WORD, _ = text_run(SANS, "VENTURECLAP", S_SIZE, (S_W - s_len) / 2, PAD + MH + S_GAP + S_CAP, 0.32 * S_SIZE)
+S_H = PAD + MH + S_GAP + S_CAP + PAD
 
-# ---- PNG output (8x supersampled) --------------------------------------------------
-def render_mark(px, theme="dark", bg=None, pad=0.0):
-    """Render the mark to a px*px PNG. `pad` is the fraction of empty margin per side."""
+for theme, suffix in (("dark", ""), ("light", "-light")):
     th = THEMES[theme]
-    ss = 8
+    write_svg(f"logo-mark{suffix}.svg", MW + 2 * PAD, MH + 2 * PAD, mark_svg(MARK, th, PAD - mx0, PAD - my0), "VentureClap V/C")
+    write_svg(f"logo{suffix}.svg", H_W, H_H, mark_svg(MARK, th, PAD - mx0, PAD - my0) + "\n  " + word_svg(H_WORD, th["word"]))
+    write_svg(f"logo-stacked{suffix}.svg", S_W, S_H,
+              mark_svg(MARK, th, (S_W - MW) / 2 - mx0, PAD - my0) + "\n  " + word_svg(S_WORD, th["word"]))
+
+# Favicon: forest rounded square, heavier monogram.
+fx0, fy0, fx1, fy1 = FAV["bounds"]
+FK = 56 / max(fx1 - fx0, fy1 - fy0)
+write_svg("favicon.svg", 64, 64,
+          f'<rect width="64" height="64" rx="12" fill="{FOREST}"/>\n  '
+          + mark_svg(FAV, THEMES["dark"], 32 - (fx0 + fx1) / 2 * FK, 32 - (fy0 + fy1) / 2 * FK, FK))
+
+
+# ---- PNG rendering ----------------------------------------------------------------------
+def render(px, m, fill_frac, bg=FOREST, radius=0.0, ss=8):
+    """Monogram centred on a px*px square; `fill_frac` = share of the square it spans."""
     big = px * ss
-    img = Image.new("RGBA", (big, big), bg or (0, 0, 0, 0))
-    d = ImageDraw.Draw(img)
-    inner = big * (1 - 2 * pad)
-    k = inner / 64
-    off = big * pad
-
-    def m(pts):
-        return [(off + x * k, off + y * k) for x, y in pts]
-
-    bx, by, bw, bh = BAR
-    d.rounded_rectangle([off + bx * k, off + by * k, off + (bx + bw) * k, off + (by + bh) * k], radius=1.5 * k, fill=th["board"])
-    for p in stripes(*BAR):
-        d.polygon(m(p), fill=th["bar_stripe"])
-    ox, oy, ow, oh = BODY
-    d.rounded_rectangle([off + ox * k, off + oy * k, off + (ox + ow) * k, off + (oy + oh) * k], radius=5 * k, fill=th["board"])
-    d.polygon(m(rot(rect_pts(*ARM))), fill=th["arm"])
-    for p in stripes(*ARM):
-        d.polygon(m(rot(p)), fill=th["arm_stripe"])
-    hx, hy, r = off + (HINGE[0] + 2) * k, off + (HINGE[1] - 0.5) * k, 2.6 * k
-    d.ellipse([hx - r, hy - r, hx + r, hy + r], fill=th["hinge"], outline=th["hinge_ring"], width=max(1, round(1.4 * k)))
-    for g, tf in VC:
-        for poly in flat_polys(g, tf):
-            if g == cmap[ord("/")]:
-                d.polygon(m(poly), fill=th["slash"], outline=th["slash_edge"], width=max(1, round(0.8 * k)))
-            else:
-                d.polygon(m(poly), fill=th["text"])
-    return img.resize((px, px), Image.LANCZOS)
-
-
-# ---- Favicon: simplified for 16-32px (board + striped top, big V/C, no swinging arm) ----
-FAV_BAR = (2.0, 3.0, 60.0, 11.0)
-FAV_BODY = (2.0, 16.0, 60.0, 46.0)
-FAV_SIZE = 36.0
-_, fw = layout("V/C", FAV_SIZE, 0, 0, tracking=-1.5)
-FAV_VC, _ = layout("V/C", FAV_SIZE, FAV_BODY[0] + (FAV_BODY[2] - fw) / 2,
-                   FAV_BODY[1] + FAV_BODY[3] / 2 + (CAP * FAV_SIZE / UPM) / 2, tracking=-1.5)
-
-
-def fav_stripes():
-    x, y, w, h = FAV_BAR
-    return [[(sx, y), (sx + 9, y), (sx + 4, y + h), (sx - 5, y + h)] for sx in (12, 28, 44, 60) if sx - 5 < x + w]
-
-
-def favicon_svg():
-    th = THEMES["dark"]
-    bx, by, bw, bh = FAV_BAR
-    ox, oy, ow, oh = FAV_BODY
-    clip = f'<clipPath id="b"><rect x="{bx}" y="{by}" width="{bw}" height="{bh}" rx="3"/></clipPath>'
-    parts = [
-        f"<defs>{clip}</defs>",
-        f'<rect x="{bx}" y="{by}" width="{bw}" height="{bh}" rx="3" fill="{th["arm"]}"/>',
-        f'<path clip-path="url(#b)" d="{"".join(poly_d(p) for p in fav_stripes())}" fill="{BLACK}"/>',
-        f'<rect x="{ox}" y="{oy}" width="{ow}" height="{oh}" rx="7" fill="{th["board"]}"/>',
-    ]
-    for g, tf in FAV_VC:
-        fill = GOLD if g == cmap[ord("/")] else BLACK
-        extra = f' stroke="{BLACK}" stroke-width="2" paint-order="stroke"' if fill == GOLD else ""
-        parts.append(f'<path d="{svg_path(g, tf)}" fill="{fill}"{extra}/>')
-    return "\n  ".join(parts)
-
-
-def render_favicon(px):
-    ss = 8
-    big = px * ss
-    k = big / 64
     img = Image.new("RGBA", (big, big), (0, 0, 0, 0))
     d = ImageDraw.Draw(img)
-    bx, by, bw, bh = FAV_BAR
-    band = Image.new("RGBA", (big, big), (0, 0, 0, 0))
-    bd = ImageDraw.Draw(band)
-    bd.rectangle([0, 0, big, big], fill=WHITE)
-    for p in fav_stripes():
-        bd.polygon([(x * k, y * k) for x, y in p], fill=BLACK)
-    mask = Image.new("L", (big, big), 0)
-    ImageDraw.Draw(mask).rounded_rectangle([bx * k, by * k, (bx + bw) * k, (by + bh) * k], radius=3 * k, fill=255)
-    img.paste(band, (0, 0), mask)
-    ox, oy, ow, oh = FAV_BODY
-    d.rounded_rectangle([ox * k, oy * k, (ox + ow) * k, (oy + oh) * k], radius=7 * k, fill=GREEN)
-    for g, tf in FAV_VC:
-        for poly in flat_polys(g, tf):
-            pts = [(x * k, y * k) for x, y in poly]
-            if g == cmap[ord("/")]:
-                d.polygon(pts, fill=GOLD, outline=BLACK, width=round(1.0 * k))
-            else:
-                d.polygon(pts, fill=BLACK)
+    d.rounded_rectangle([0, 0, big - 1, big - 1], radius=radius * big, fill=bg)
+    x0, y0, x1, y1 = m["bounds"]
+    k = big * fill_frac / max(x1 - x0, y1 - y0)
+    ox = big / 2 - (x0 + x1) / 2 * k
+    oy = big / 2 - (y0 + y1) / 2 * k
+
+    def tr(poly):
+        return [(ox + x * k, oy + y * k) for x, y in poly]
+
+    mask = Image.new("1", (big, big), 0)
+    for gl in m["glyphs"]:
+        for poly in gl.polys():
+            layer = Image.new("1", (big, big), 0)
+            ImageDraw.Draw(layer).polygon(tr(poly), fill=1)
+            mask = ImageChops.logical_xor(mask, layer)
+    img.paste(Image.new("RGBA", (big, big), IVORY), (0, 0), mask.convert("L"))
+    d.polygon(tr(m["slash"]), fill=BRASS)
     return img.resize((px, px), Image.LANCZOS)
 
 
-write_svg("favicon.svg", favicon_svg(), 64, 64, "VentureClap")
-render_mark(1080, bg=BLACK, pad=0.16).convert("RGB").save(OUT / "avatar-1080.png")
-render_mark(180, bg=BLACK, pad=0.08).convert("RGB").save(OUT / "apple-touch-icon.png")
-render_favicon(32).save(OUT / "favicon-32.png")
-render_favicon(16).save(OUT / "favicon-16.png")
-print("wrote", sorted(p.name for p in OUT.iterdir()))
+if __name__ == "__main__":
+    render(1080, MARK, 0.52).convert("RGB").save(OUT / "avatar-1080.png")
+    render(180, MARK, 0.62).convert("RGB").save(OUT / "apple-touch-icon.png")
+    render(32, FAV, 56 / 64, radius=12 / 64).save(OUT / "favicon-32.png")
+    render(16, FAV, 60 / 64, radius=10 / 64).save(OUT / "favicon-16.png")
+    print("wrote", sorted(p.name for p in OUT.iterdir() if not p.name.startswith("_")))

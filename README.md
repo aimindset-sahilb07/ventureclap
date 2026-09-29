@@ -20,19 +20,23 @@ You can compress photos for free at squoosh.app.
 Search `index.html` for `EDIT:`. That covers the headline, email, social links and the `og:image` URL, which must be the full `https://…` address once the site is live.
 
 ## Brand
-VentureClap, short form **V/C**. Palette: green `#2EE59D` (`#0A8F57` on light), gold `#F5B82E`, white and black `#0B0B0D`. Typeface: Inter Tight 800.
+VentureClap, short form **V/C**: a serif monogram with a brass slash.
+Palette: forest `#0F2A22`, ivory `#F4F1EA`, brass `#C9A35A` (`#A8823A` on ivory) and black `#0B0B0D`.
+Type: Cormorant Garamond for the monogram and headings, and Inter for the wordmark and body text.
 Open `brand.html` to see everything on one page.
 
 | File | Use |
 |---|---|
-| `assets/logo.svg` / `logo-light.svg` | Full logo for dark / light backgrounds |
-| `assets/logo-mark.svg` / `logo-mark-light.svg` | V/C clapper icon |
-| `assets/favicon.svg`, `favicon-16/32.png` | Simplified icon for small sizes (browser tab) |
+| `assets/logo-stacked.svg` / `logo-stacked-light.svg` | Main logo (monogram above the wordmark) |
+| `assets/logo.svg` / `logo-light.svg` | Horizontal logo (website header, email signature) |
+| `assets/logo-mark.svg` / `logo-mark-light.svg` | V/C monogram only |
+| `assets/favicon.svg`, `favicon-16/32.png` | Browser tab icon (bolder cut) |
 | `assets/apple-touch-icon.png` | iPhone home screen icon |
 | `assets/avatar-1080.png` | Instagram / LinkedIn profile picture |
 
+`-light` versions are for ivory or white backgrounds.
 The logo text is converted to shapes, so the logo files don't need any font installed.
-To change the logo, edit `brand/build_logo.py`, download the Inter Tight font (`InterTight[wght].ttf` from github.com/google/fonts, `ofl/intertight`) and save it next to the script as `InterTight.ttf`, then run it with `fonttools`, `skia-pathops` and `pillow` installed:
+To change the logo, edit `brand/build_logo.py`. Download `CormorantGaramond[wght].ttf` and `Inter[opsz,wght].ttf` from github.com/google/fonts (`ofl/cormorantgaramond`, `ofl/inter`) and save them next to the script as `CormorantGaramond.ttf` and `Inter.ttf`. Then run it with `fonttools`, `skia-pathops` and `pillow` installed:
 ```
 python brand/build_logo.py assets
 ```
