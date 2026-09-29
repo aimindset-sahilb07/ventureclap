@@ -8,15 +8,14 @@
   <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500&family=Inter:wght@400;500&display=swap" rel="stylesheet">
   <style>
-    :root { --forest:#0F2A22; --ivory:#F4F1EA; --brass:#C9A35A; --black:#0B0B0D; --muted:#B9B4A8; --line:#24473B; }
+    :root { --ink:#0B0B0C; --ivory:#F4F1EA; --brass:#C9A35A; --muted:#A8A49B; --line:#262626; }
     * { box-sizing: border-box; }
-    body { margin:0; background:var(--forest); color:var(--ivory); font:15px/1.6 Inter, system-ui, sans-serif; padding:48px 16px 72px; }
+    body { margin:0; background:var(--ink); color:var(--ivory); font:15px/1.6 Inter, system-ui, sans-serif; padding:48px 16px 72px; }
     main { max-width:1040px; margin:0 auto; display:grid; gap:48px; }
     h1 { font:500 40px/1.1 "Cormorant Garamond", Georgia, serif; margin:0; }
     h2 { font:500 12px Inter, sans-serif; text-transform:uppercase; letter-spacing:.28em; color:var(--brass); margin:0 0 16px; }
     p { color:var(--muted); margin:8px 0 0; }
     .panel { border:1px solid var(--line); border-radius:4px; padding:40px 24px; display:flex; align-items:center; justify-content:center; min-height:180px; }
-    .on-black { background:var(--black); border-color:var(--black); }
     .on-ivory { background:var(--ivory); border-color:var(--ivory); }
     .grid { display:grid; gap:16px; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); }
     .h { width:100%; max-width:360px; height:auto; }
@@ -39,13 +38,13 @@
 <main>
   <header>
     <h1>VentureClap</h1>
-    <p>Serif V/C monogram. Forest, ivory, brass and black.</p>
+    <p>Serif V/C monogram. Ink black, ivory and brass.</p>
   </header>
 
   <section>
     <h2>Primary logo, stacked</h2>
     <div class="grid">
-      <div class="panel"><img class="s" src="assets/logo-stacked.svg" alt="Stacked logo on forest"></div>
+      <div class="panel"><img class="s" src="assets/logo-stacked.svg" alt="Stacked logo on black"></div>
       <div class="panel on-ivory"><img class="s" src="assets/logo-stacked-light.svg" alt="Stacked logo on ivory"></div>
     </div>
     <p><code>logo-stacked.svg</code> and <code>logo-stacked-light.svg</code>: for cards, decks, video end frames and merch.</p>
@@ -54,8 +53,7 @@
   <section>
     <h2>Horizontal logo</h2>
     <div class="grid">
-      <div class="panel"><img class="h" src="assets/logo.svg" alt="Horizontal logo on forest"></div>
-      <div class="panel on-black"><img class="h" src="assets/logo.svg" alt="Horizontal logo on black"></div>
+      <div class="panel"><img class="h" src="assets/logo.svg" alt="Horizontal logo on black"></div>
       <div class="panel on-ivory"><img class="h" src="assets/logo-light.svg" alt="Horizontal logo on ivory"></div>
     </div>
     <p><code>logo.svg</code> and <code>logo-light.svg</code>: for the website header, email signatures and anywhere wide.</p>
@@ -64,14 +62,14 @@
   <section>
     <h2>Monogram</h2>
     <div class="grid">
-      <div class="panel"><img src="assets/logo-mark.svg" width="180" alt="V/C monogram on forest"></div>
+      <div class="panel"><img src="assets/logo-mark.svg" width="180" alt="V/C monogram on black"></div>
       <div class="panel on-ivory"><img src="assets/logo-mark-light.svg" width="180" alt="V/C monogram on ivory"></div>
     </div>
   </section>
 
   <section>
     <h2>Small sizes</h2>
-    <div class="panel on-black" style="justify-content:flex-start">
+    <div class="panel" style="justify-content:flex-start">
       <div class="sizes">
         <figure><img src="assets/favicon.svg" width="128" height="128" alt=""><figcaption>128</figcaption></figure>
         <figure><img src="assets/favicon.svg" width="64" height="64" alt=""><figcaption>64</figcaption></figure>
@@ -84,18 +82,18 @@
 
   <section>
     <h2>Social avatar</h2>
-    <div class="panel on-black"><img class="avatar" src="assets/avatar-1080.png" alt="V/C social avatar"></div>
+    <div class="panel"><img class="avatar" src="assets/avatar-1080.png" alt="V/C social avatar"></div>
     <p><code>avatar-1080.png</code> is 1080×1080 and safe for circular crops on Instagram and LinkedIn.</p>
   </section>
 
   <section>
     <h2>Palette</h2>
     <div class="swatches">
-      <div class="sw"><div style="background:#0F2A22"></div><span><b>Forest</b>#0F2A22</span></div>
+      <div class="sw"><div style="background:#0B0B0C"></div><span><b>Ink</b>#0B0B0C</span></div>
       <div class="sw"><div style="background:#F4F1EA"></div><span><b>Ivory</b>#F4F1EA</span></div>
       <div class="sw"><div style="background:#C9A35A"></div><span><b>Brass</b>#C9A35A</span></div>
       <div class="sw"><div style="background:#A8823A"></div><span><b>Brass (on ivory)</b>#A8823A</span></div>
-      <div class="sw"><div style="background:#0B0B0D"></div><span><b>Black</b>#0B0B0D</span></div>
+      <div class="sw"><div style="background:#151515"></div><span><b>Panel</b>#151515</span></div>
     </div>
   </section>
 

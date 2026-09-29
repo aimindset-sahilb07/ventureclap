@@ -23,7 +23,7 @@ The contact section (Haren's photo `assets/haren.jpg`, phone numbers and email) 
 
 ## Brand
 VentureClap, short form **V/C**: a serif monogram with a brass slash.
-Palette: forest `#0F2A22`, ivory `#F4F1EA`, brass `#C9A35A` (`#A8823A` on ivory) and black `#0B0B0D`.
+Palette: ink black `#0B0B0C` (panels `#151515`), ivory `#F4F1EA` and brass `#C9A35A` (`#A8823A` on ivory). Black keeps the focus on the photos.
 Type: Cormorant Garamond for the monogram and headings, and Inter for the wordmark and body text.
 Open `brand.html` to see everything on one page.
 

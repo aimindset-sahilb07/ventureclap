@@ -22,15 +22,14 @@ from PIL import Image, ImageChops, ImageDraw
 OUT = Path(sys.argv[1])
 HERE = Path(__file__).parent
 
-FOREST = "#0F2A22"
+INK = "#0B0B0C"
 IVORY = "#F4F1EA"
 BRASS = "#C9A35A"
 BRASS_DEEP = "#A8823A"  # brass on light backgrounds
-BLACK = "#0B0B0D"
 
 THEMES = {
     "dark": dict(letters=IVORY, slash=BRASS, word=IVORY),
-    "light": dict(letters=FOREST, slash=BRASS_DEEP, word=FOREST),
+    "light": dict(letters=INK, slash=BRASS_DEEP, word=INK),
 }
 
 
@@ -221,16 +220,16 @@ for theme, suffix in (("dark", ""), ("light", "-light")):
     write_svg(f"logo-stacked{suffix}.svg", S_W, S_H,
               mark_svg(MARK, th, (S_W - MW) / 2 - mx0, PAD - my0) + "\n  " + word_svg(S_WORD, th["word"]))
 
-# Favicon: forest rounded square, heavier monogram.
+# Favicon: ink rounded square, heavier monogram.
 fx0, fy0, fx1, fy1 = FAV["bounds"]
 FK = 56 / max(fx1 - fx0, fy1 - fy0)
 write_svg("favicon.svg", 64, 64,
-          f'<rect width="64" height="64" rx="12" fill="{FOREST}"/>\n  '
+          f'<rect width="64" height="64" rx="12" fill="{INK}"/>\n  '
           + mark_svg(FAV, THEMES["dark"], 32 - (fx0 + fx1) / 2 * FK, 32 - (fy0 + fy1) / 2 * FK, FK))
 
 
 # ---- PNG rendering ----------------------------------------------------------------------
-def render(px, m, fill_frac, bg=FOREST, radius=0.0, ss=8):
+def render(px, m, fill_frac, bg=INK, radius=0.0, ss=8):
     """Monogram centred on a px*px square; `fill_frac` = share of the square it spans."""
     big = px * ss
     img = Image.new("RGBA", (big, big), (0, 0, 0, 0))

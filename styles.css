@@ -1,13 +1,12 @@
 /* Brand tokens: change these to rebrand */
 :root {
-  --bg: #0F2A22;         /* forest */
-  --surface: #15352B;
-  --line: #24473B;
+  --bg: #0B0B0C;         /* ink */
+  --surface: #151515;
+  --line: #262626;
   --text: #F4F1EA;       /* ivory */
-  --muted: #B9B4A8;
+  --muted: #A8A49B;
   --accent: #C9A35A;     /* brass */
-  --accent-ink: #0F2A22;
-  --black: #0B0B0D;
+  --accent-ink: #0B0B0C;
   --radius: 4px;
   --gutter: 16px;
   --font-head: "Cormorant Garamond", Georgia, "Times New Roman", serif;
@@ -53,17 +52,17 @@ a { color: inherit; }
   display: flex; flex-direction: column; justify-content: space-between; gap: 40px;
   padding: max(var(--gutter), env(safe-area-inset-top)) var(--gutter) clamp(32px, 6svh, 72px);
   /* Fallback if hero.jpg is missing */
-  background: radial-gradient(120% 80% at 70% 20%, #1d4a3b 0%, #12302700 60%), var(--bg);
+  background: radial-gradient(120% 80% at 70% 20%, #232323 0%, #16161600 60%), var(--bg);
   isolation: isolate;
 }
 .hero-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center; z-index: -2; }
 .hero-shade {
   position: absolute; inset: 0; z-index: -1;
   background:
-    linear-gradient(90deg, rgba(15,42,34,.7) 0%, rgba(15,42,34,.35) 45%, rgba(15,42,34,0) 75%),
-    linear-gradient(180deg, rgba(15,42,34,.6) 0%, rgba(15,42,34,.15) 30%, rgba(15,42,34,.55) 60%, rgba(15,42,34,.92) 100%);
+    linear-gradient(90deg, rgba(11,11,12,.7) 0%, rgba(11,11,12,.35) 45%, rgba(11,11,12,0) 75%),
+    linear-gradient(180deg, rgba(11,11,12,.6) 0%, rgba(11,11,12,.15) 30%, rgba(11,11,12,.55) 60%, rgba(11,11,12,.92) 100%);
 }
-.hero-copy { text-shadow: 0 1px 14px rgba(15,42,34,.7); }
+.hero-copy { text-shadow: 0 1px 14px rgba(11,11,12,.7); }
 /* Hero content lines up with the 1200px column used by the sections below */
 .topbar, .hero-copy { width: 100%; max-width: calc(1200px - 2 * var(--gutter)); margin-inline: auto; }
 .topbar { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
@@ -97,7 +96,7 @@ a { color: inherit; }
 .shot:hover img { transform: scale(1.03); }
 .shot:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 /* Placeholder tile when the photo file is not there yet */
-.shot.missing { aspect-ratio: 4 / 5; background: linear-gradient(135deg, #1b4236, var(--surface) 60%); cursor: default; }
+.shot.missing { aspect-ratio: 4 / 5; background: linear-gradient(135deg, #202020, var(--surface) 60%); cursor: default; }
 .shot.missing img { display: none; }
 
 /* Cards */
