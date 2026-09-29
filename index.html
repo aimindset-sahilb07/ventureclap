@@ -23,7 +23,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;1,500&family=Inter:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=7">
+  <link rel="stylesheet" href="styles.css?v=9">
 </head>
 <body>
   <a class="skip" href="#work">Skip to work</a>
@@ -53,19 +53,16 @@
   </header>
 
   <main>
-    <!-- RECENT WORK: photos only. Add a photo = copy one <button> line and change the filename. -->
+    <!-- RECENT WORK: photos only. Add a photo = copy one <button> line and change the filename.
+         Add class "wide" to a landscape photo to span two columns on larger screens. -->
     <section id="work" class="section">
       <h2>Recent work</h2>
       <div class="gallery">
-        <button class="shot"><img src="assets/work-01.jpg" alt="Behind the scenes photo" loading="lazy"></button>
-        <button class="shot"><img src="assets/work-02.jpg" alt="Behind the scenes photo" loading="lazy"></button>
-        <button class="shot"><img src="assets/work-03.jpg" alt="Behind the scenes photo" loading="lazy"></button>
-        <button class="shot"><img src="assets/work-04.jpg" alt="Behind the scenes photo" loading="lazy"></button>
-        <button class="shot"><img src="assets/work-05.jpg" alt="Behind the scenes photo" loading="lazy"></button>
-        <button class="shot"><img src="assets/work-06.jpg" alt="Behind the scenes photo" loading="lazy"></button>
-        <button class="shot"><img src="assets/work-07.jpg" alt="Behind the scenes photo" loading="lazy"></button>
-        <button class="shot"><img src="assets/work-08.jpg" alt="Behind the scenes photo" loading="lazy"></button>
-        <button class="shot"><img src="assets/work-09.jpg" alt="Behind the scenes photo" loading="lazy"></button>
+        <button class="shot wide"><img src="assets/work-01.jpg" width="1600" height="1284" alt="Startup team seated around a conference table" loading="lazy"></button>
+        <button class="shot"><img src="assets/work-02.jpg" width="1277" height="1600" alt="Portrait of a young engineer seated at a desk" loading="lazy"></button>
+        <button class="shot"><img src="assets/work-03.jpg" width="1275" height="1600" alt="Team posed on an office staircase" loading="lazy"></button>
+        <button class="shot"><img src="assets/work-05.jpg" width="1277" height="1600" alt="Executive seated in an orange armchair" loading="lazy"></button>
+        <button class="shot"><img src="assets/work-04.jpg" width="1600" height="1287" alt="Portrait of a founder with arms crossed" loading="lazy"></button>
       </div>
     </section>
 
@@ -114,6 +111,6 @@
     <button class="lb-next" aria-label="Next photo">›</button>
   </div>
 
-  <script src="script.js?v=5" defer></script>
+  <script src="script.js?v=7" defer></script>
 </body>
 </html>

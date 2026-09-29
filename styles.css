@@ -86,19 +86,18 @@ a { color: inherit; }
 .section { padding: 72px var(--gutter); max-width: 1200px; margin: 0 auto; }
 .section h2 { font-size: clamp(34px, 7vw, 56px); margin-bottom: 28px; }
 
-/* Gallery: masonry via CSS columns */
-.gallery { columns: 1; column-gap: 12px; }
+/* Gallery: editorial grid. Phones show photos at their own shape; wider screens
+   crop to tidy rows (portrait tiles 4:5, .wide tiles span two columns at 8:5). */
+.gallery { display: grid; grid-template-columns: 1fr; gap: 12px; }
 .shot {
-  display: block; width: 100%; margin: 0 0 12px; padding: 0; border: 0; cursor: zoom-in;
-  background: var(--surface); border-radius: var(--radius); overflow: hidden; break-inside: avoid;
+  position: relative; display: block; width: 100%; margin: 0; padding: 0; border: 0; cursor: zoom-in;
+  background: var(--surface); border-radius: var(--radius); overflow: hidden;
 }
-.shot img { width: 100%; height: auto; transition: transform .4s ease; }
+.shot img { width: 100%; height: auto; transition: transform .6s ease; }
 .shot:hover img { transform: scale(1.03); }
 .shot:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 /* Placeholder tile when the photo file is not there yet */
 .shot.missing { aspect-ratio: 4 / 5; background: linear-gradient(135deg, #1b4236, var(--surface) 60%); cursor: default; }
-.shot.missing:nth-child(3n+2) { aspect-ratio: 4 / 3; }
-.shot.missing:nth-child(3n) { aspect-ratio: 1; }
 .shot.missing img { display: none; }
 
 /* Cards */
@@ -148,13 +147,18 @@ a { color: inherit; }
 /* Tablet / desktop */
 @media (min-width: 600px) {
   :root { --gutter: 32px; }
-  .gallery { columns: 2; }
+  .gallery { grid-template-columns: repeat(2, 1fr); }
+  .shot { aspect-ratio: 4 / 5; }
+  .shot.wide { grid-column: span 2; aspect-ratio: 8 / 5; }
+  .shot img { height: 100%; object-fit: cover; }
   .cards { grid-template-columns: repeat(2, 1fr); }
 }
 @media (min-width: 960px) {
   :root { --gutter: 48px; }
-  .gallery { columns: 3; column-gap: 16px; }
-  .shot { margin-bottom: 16px; }
+  .gallery { grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  /* Wide tiles take their height from the portrait next to them, so rows line up exactly */
+  .shot.wide { aspect-ratio: auto; }
+  .shot.wide img { position: absolute; inset: 0; }
   .cards { grid-template-columns: repeat(3, 1fr); }
   .steps { grid-template-columns: repeat(3, 1fr); gap: 32px; }
   .section { padding: 112px var(--gutter); }

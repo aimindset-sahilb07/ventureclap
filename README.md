@@ -7,13 +7,14 @@ Put the photos in `assets/` using these exact names:
 
 | File | Used for | Suggested size |
 |---|---|---|
-| `hero.jpg` | Full-screen photo at the top | 2400px wide, landscape, under 500 KB |
-| `work-01.jpg` … `work-09.jpg` | Recent work gallery | 1600px on the long side, under 300 KB each |
+| `hero-1000.jpg`, `hero-2000.jpg` | Full-screen photo at the top (phone / larger screens) | 1000px and 2000px wide |
+| `work-01.jpg` … `work-05.jpg` | Recent work gallery | 1600px on the long side, under 300 KB each |
 | `og.jpg` | Preview image when the link is shared | exactly 1200×630 |
 
-You can mix portrait and landscape photos. The gallery is a masonry layout.
+On phones, gallery photos show at their own shape. On wider screens they're cropped into tidy rows: portrait tiles at 4:5, and tiles marked `wide` span two columns at 8:5.
 A photo that isn't there yet appears as a dark placeholder tile.
-To add or remove gallery photos, copy or delete a `<button class="shot">` line in `index.html`.
+To add or remove gallery photos, copy or delete a `<button class="shot">` line in `index.html`. Add `wide` to a landscape photo's class to make it span two columns.
+The original full-size photos are kept in `assets/harenmehta_images_website_2026-09-28_2025/`.
 You can compress photos for free at squoosh.app.
 
 ## Placeholders to edit
