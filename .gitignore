@@ -1,2 +1,5 @@
 .DS_Store
 Thumbs.db
+
+# Original full-size photos (web copies live in assets/)
+assets/harenmehta_images_*/
